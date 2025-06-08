@@ -4,9 +4,10 @@ import { Todo } from '../../types/Todo';
 type Props = {
   todos: Todo[];
   onSelect: (todo: Todo) => void;
+  activeTodo: Todo | null;
 };
 
-export const TodoList: React.FC<Props> = ({ todos, onSelect }) => {
+export const TodoList: React.FC<Props> = ({ todos, onSelect, activeTodo }) => {
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -23,8 +24,8 @@ export const TodoList: React.FC<Props> = ({ todos, onSelect }) => {
       </thead>
 
       <tbody>
-        {todos.map(t => {
-          const { completed, id, title } = t;
+        {todos.map(todo => {
+          const { completed, id, title } = todo;
 
           return (
             <tr key={id} data-cy="todo" className="">
@@ -46,10 +47,12 @@ export const TodoList: React.FC<Props> = ({ todos, onSelect }) => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => onSelect(t)}
+                  onClick={() => onSelect(todo)}
                 >
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i
+                      className={`far fa-eye${id === activeTodo?.id ? '-slash' : ''}`}
+                    />
                   </span>
                 </button>
               </td>

@@ -14,16 +14,18 @@ export const TodoModal: React.FC<Props> = ({ activeTodo, onClose }) => {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {
-    if (!activeTodo?.userId) {
+    if (!activeTodo) {
       return;
     }
 
     setIsLoadingUser(true);
 
-    getUser(activeTodo?.userId)
+    getUser(activeTodo.userId)
       .then(setSelectedUser)
+      // eslint-disable-next-line no-console
+      .catch(() => console.error('Failed to fetch user'))
       .finally(() => setIsLoadingUser(false));
-  }, [activeTodo?.userId]);
+  }, [activeTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -40,7 +42,6 @@ export const TodoModal: React.FC<Props> = ({ activeTodo, onClose }) => {
             >
               Todo #{activeTodo?.id}
             </div>
-
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
